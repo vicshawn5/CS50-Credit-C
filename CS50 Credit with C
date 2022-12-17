@@ -1,0 +1,122 @@
+#include <cs50.h>
+#include <stdio.h>
+
+
+int main(void)
+
+{
+    long cardNum = get_long("Card Number: ");
+    // get the length of the card number
+    long x = cardNum;
+    int i = 0;
+    while(x > 0)
+    {
+        x = x / 10;
+        i++;
+    }
+    //print if card length doesn't corresponds
+    if (i != 13 && i != 15 && i != 16)
+    {
+        printf("INVALID\n");
+        return 0;
+    }
+
+    //calculate the multiple sum
+    long n = cardNum;
+    int d1, d2, digit, digit_multi;
+    int multi_sum = 0;
+    do
+    {
+        digit = n % 100;
+        digit = digit / 10;
+        n = n / 100;
+        digit_multi = digit * 2;
+        d1 = digit_multi % 10;
+        d2 = digit_multi / 10;
+        multi_sum = multi_sum + d1 + d2;
+    }
+    while (n > 0);
+
+    //calculate the non multiple sum
+    long m = cardNum;
+    int digit_2;
+    int sum = 0;
+    int total_sum = 0;
+
+    do
+    {
+        digit_2 = m % 10;
+        m = m / 100;
+        sum = sum + digit_2;
+    }
+    while (m > 0);
+
+    total_sum = multi_sum + sum;
+
+    //print with regard to Luhn Algorithm
+    if (total_sum % 10 != 0)
+    {
+        printf("INVALID\n");
+        return 0;
+    }
+
+    //get card number length
+    long p = cardNum;
+    int j = 0;
+    while (p > 0)
+    {
+        p = p / 10;
+        j++;
+    }
+    long amex = cardNum / 10000000000000; //get first two digits
+    long visa = cardNum / 1000000000000; //get first digit
+    long visa2 = cardNum / 1000000000000000; //get first digit
+    long mcard = cardNum / 100000000000000; //get first two digits
+
+    if (j == 15)
+    {
+        if (amex == 34 || amex == 37)
+        {
+            printf("AMEX\n");
+        }
+        else
+        {
+            printf("INVALID\n");
+        }
+    }
+    if (j == 16)
+    {
+        if (mcard == 51 || mcard == 52 || mcard == 53 || mcard == 54 || mcard == 55)
+        {
+            printf("MASTERCARD\n");
+        }
+        else if (visa2 == 4)
+        {
+            printf("VISA\n");
+        }
+        else
+        {
+            printf("INVALID\n");
+        }
+    }
+    if (j == 13)
+    {
+        if (visa == 4)
+        {
+            printf("VISA\n");
+        }
+        else
+        {
+            printf("INVALID\n");
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
